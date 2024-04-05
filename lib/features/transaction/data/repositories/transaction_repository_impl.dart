@@ -21,12 +21,11 @@ class TransactionRepositoryImpl implements TransactionRepository {
   });
 
   @override
-  Future<Either<Failure,  List<TransactionModel>>> getTransaction(
-      {required TransactionParams transactionParams}) async {
+  Future<Either<Failure, List<TransactionModel>>> getTransaction() async {
     if (await networkInfo.isConnected!) {
       try {
         List<TransactionModel> remoteTransaction =
-            await remoteDataSource.getTransaction(transactionParams: transactionParams);
+            await remoteDataSource.getTransaction();
 
         localDataSource.cacheTransaction(transactionToCache: remoteTransaction);
 
@@ -41,6 +40,28 @@ class TransactionRepositoryImpl implements TransactionRepository {
       } on CacheException {
         return Left(CacheFailure(errorMessage: 'This is a cache exception'));
       }
+    }
+  }
+
+  @override
+  Future<Either<Failure, TransactionModel>> postTransaction({
+    required TransactionParams transactionParams,
+    required TransactionModel transactionModel,
+  }) async {
+    if (await networkInfo.isConnected!) {
+      try {
+        final updatedTransaction = await remoteDataSource.postTransaction(
+          transactionParams: transactionParams,
+          transactionModel: transactionModel,
+        );
+        return Right(updatedTransaction);
+      } on ServerException {
+        return Left(ServerFailure(errorMessage: 'This is a server exception'));
+      }
+    } else {
+      return Left(
+        NetworkFailure(errorMessage: 'No internet connection available'),
+      );
     }
   }
 }

@@ -1,7 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:yeu_tien/core/constants/constants.dart';
+import 'package:yeu_tien/features/balance/presentation/providers/balance_provider.dart';
 import 'package:yeu_tien/features/sekeleton/provider/selected_page_provider.dart';
+import 'package:yeu_tien/features/transaction/presentation/providers/transaction_provider.dart';
+
+import '../../../group/presentation/providers/select_group_provider.dart';
 
 class AddTransactionPage extends StatefulWidget {
   const AddTransactionPage({super.key});
@@ -11,16 +17,25 @@ class AddTransactionPage extends StatefulWidget {
 }
 
 class _AddTransactionPageState extends State<AddTransactionPage> {
+  double amount = 0;
+
   @override
   Widget build(BuildContext context) {
+    TransactionProvider transactionProvider =
+    Provider.of<TransactionProvider>(context, listen: false);
+    int selectGroup = Provider.of<SelectedGroupProvider>(context).selectedGroup;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundContainer,
         title: Row(
           children: [
-            IconButton(onPressed: () {
-              Provider.of<SelectedPageProvider>(context, listen: false).changePage(0);
-            }, icon: const Icon(Icons.close)),
+            IconButton(
+                onPressed: () {
+                  Provider.of<SelectedPageProvider>(context, listen: false)
+                      .changePage(0);
+                },
+                icon: const Icon(Icons.close)),
             const SizedBox(
               width: 20,
             ),
@@ -55,7 +70,11 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
                         SizedBox(
                           width: 300,
                           child: TextField(
-                            onChanged: (text) {},
+                            onChanged: (text) {
+                              setState(() {
+                                amount = double.parse(text);
+                              });
+                            },
                             style: TextStyle(color: kTextButton),
                             decoration: InputDecoration(
                                 hintText: "0",
@@ -130,15 +149,27 @@ class _AddTransactionPageState extends State<AddTransactionPage> {
               height: 30,
             ),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                transactionProvider.postTransaction(id: Random().nextInt(100).toString(),
+                    balanceID: "1",
+                    group: "group",
+                    amount: amount,
+                    note: "note",
+                    type: (selectGroup == 0)? "spending" : "income",
+                    addAt: DateTime.now().toString());
+                transactionProvider.eitherFailureOrTransaction();
+                Provider.of<BalanceProvider>(context, listen: false).calculateBalance(id: "1");
+                Provider.of<BalanceProvider>(context, listen: false).eitherFailureOrBalance(value: "1");
+                Provider.of<SelectedPageProvider>(context, listen: false).changePage(0);
+              },
               style: TextButton.styleFrom(
                   backgroundColor: kBackgroundContainer,
-                  fixedSize: const Size(300, 25)
-              ),
+                  fixedSize: const Size(300, 25)),
               child: Text(
                 "Lưu",
                 style: TextStyle(color: kNormalText),
-              ),)
+              ),
+            )
           ],
         ),
       ),

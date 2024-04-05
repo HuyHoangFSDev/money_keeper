@@ -7,8 +7,8 @@ import 'package:yeu_tien/features/group/presentation/widgets/income_widget.dart'
 import 'package:yeu_tien/features/group/presentation/widgets/spending_widget.dart';
 
 List<Widget> groups = const [
+  SpendingWidget(),
   IncomeWidget(),
-  SpendingWidget()
 ];
 
 class SelectGroupPage extends StatefulWidget {

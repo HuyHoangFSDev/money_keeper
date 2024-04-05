@@ -6,4 +6,8 @@ class BalanceParams {
   const BalanceParams({required this.id});
 }
 
-class TransactionParams {}
+class TransactionParams {
+  String id;
+
+  TransactionParams(this.id);
+}

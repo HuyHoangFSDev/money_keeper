@@ -10,12 +10,12 @@ import '../balance/presentation/pages/balance_page.dart';
 import '../transaction/presentation/pages/add_transaction_page.dart';
 import '../transaction/presentation/pages/transaction_page.dart';
 
-List<Widget> pages = const [
-  BalancePage(),
-  TransactionPage(),
-  AddTransactionPage(),
-  BudgetPage(),
-  ProfilePage()
+List<Widget> pages =  [
+  const BalancePage(),
+  const TransactionPage(),
+  const AddTransactionPage(),
+  const BudgetPage(),
+  const ProfilePage()
 ];
 
 class Skeleton extends StatefulWidget {

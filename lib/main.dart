@@ -99,28 +99,17 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
+    setupApp();
+    super.initState();
+  }
+
+  void setupApp() {
     SelectedBalanceProvider selectedBalanceProvider =
         Provider.of<SelectedBalanceProvider>(context, listen: false);
     Provider.of<BalanceProvider>(context, listen: false).eitherFailureOrBalance(
         value: (selectedBalanceProvider.number + 1).toString());
     Provider.of<TransactionProvider>(context, listen: false)
-        .eitherFailureOrTransaction(value: "");
-    calculateBalance();
-    super.initState();
-  }
-
-  void calculateBalance() async {
-    List<TransactionEntity>? transactions = [];
-    transactions = Provider.of<TransactionProvider>(context, listen: false).transaction ?? [];
-    double balance = transactions.fold(0, (prev, transaction) {
-      if (transaction.type == 'income') {
-        return prev + transaction.amount;
-      } else {
-        return prev - transaction.amount;
-      }
-    });
-    await Provider.of<BalanceProvider>(context, listen: false)
-        .updateBalance(id: "1", newBalance: balance);
+        .eitherFailureOrTransaction();
   }
 
   @override

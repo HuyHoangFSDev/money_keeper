@@ -1,11 +1,11 @@
 class TransactionEntity {
-  final int id;
-  final int balanceID;
+  final String id;
+  final String balanceID;
   final String group;
   final double amount;
   final String note;
   final String type;
-  final DateTime addAt;
+  final String addAt;
 
   const TransactionEntity({
     required this.balanceID,

@@ -14,26 +14,31 @@ class GroupWidget extends StatefulWidget {
 class _GroupWidgetState extends State<GroupWidget> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Container(
-        color: kBackgroundContainer,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 10),
-          child: Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: AssetImage(widget.image),
-                radius: 20,
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              Text(
-                widget.text,
-                style: TextStyle(color: kPrimaryText),
-              )
-            ],
+    return InkWell(
+      onTap: (){
+        Navigator.pop(context);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Container(
+          color: kBackgroundContainer,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 10),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundImage: AssetImage(widget.image),
+                  radius: 20,
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  widget.text,
+                  style: TextStyle(color: kPrimaryText),
+                )
+              ],
+            ),
           ),
         ),
       ),

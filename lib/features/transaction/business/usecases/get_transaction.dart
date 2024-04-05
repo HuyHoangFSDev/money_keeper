@@ -10,10 +10,7 @@ class GetTransaction {
 
   GetTransaction(this.transactionRepository);
 
-  Future<Either<Failure, List<TransactionEntity>>> call({
-    required TransactionParams transactionParams,
-  }) async {
-    return await transactionRepository.getTransaction(
-        transactionParams: transactionParams);
+  Future<Either<Failure, List<TransactionEntity>>> call() async {
+    return await transactionRepository.getTransaction();
   }
 }
